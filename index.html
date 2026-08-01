@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff4f87">
+<title>Para mi lobita hermosa 💖</title>
+<style>
+:root{
+  --pink:#ff4f87;--pink2:#ff8eb1;--purple:#7657d9;--ink:#3b1b2a;
+  --white:#fff;--glass:rgba(255,255,255,.78);
+  --shadow:0 22px 65px rgba(105,31,68,.20);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 12%,#ffd3e1 0 8%,transparent 30%),
+    radial-gradient(circle at 88% 22%,#e3d9ff 0 8%,transparent 29%),
+    linear-gradient(145deg,#fff9fb,#fff0f5 55%,#f5f1ff);
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;
+  background-image:radial-gradient(#ff7ca5 1px,transparent 1px);
+  background-size:22px 22px;
+}
+.screen{
+  position:fixed;inset:0;padding:22px;display:grid;place-items:center;
+  opacity:0;visibility:hidden;transform:translateX(50px) scale(.97);
+  transition:opacity .65s ease,transform .65s cubic-bezier(.2,.8,.2,1),visibility .65s;
+  overflow:auto;
+}
+.screen.active{opacity:1;visibility:visible;transform:none;z-index:2}
+.screen.exit{opacity:0;transform:translateX(-50px) scale(.97)}
+.shell{width:min(920px,100%);text-align:center;padding:30px 0}
+.card{
+  background:var(--glass);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.95);border-radius:34px;
+  padding:clamp(24px,5vw,52px);box-shadow:var(--shadow);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 15px;
+  border-radius:999px;background:#fff;border:1px solid #ffd2df;
+  box-shadow:0 8px 25px #ffb7cc55;font-weight:850;
+}
+h1{font-size:clamp(3.2rem,10vw,7rem);line-height:.92;margin:22px 0 16px;letter-spacing:-.075em}
+h2{font-size:clamp(2.25rem,7vw,4.7rem);line-height:1;margin:0 0 18px;letter-spacing:-.06em}
+p{font-size:clamp(1rem,2.4vw,1.22rem);line-height:1.65}
+.gradient{background:linear-gradient(100deg,var(--pink),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{
+  border:0;border-radius:22px;padding:17px 25px;font-size:1rem;font-weight:900;
+  cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--pink),#ff719d);
+  box-shadow:0 12px 28px #ff4f8755;transition:.22s transform,.22s box-shadow;
+}
+.btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 35px #ff4f8766}
+.btn:active{transform:scale(.96)}
+.btn.secondary{background:#fff;color:var(--pink);border:1px solid #ffd1df;box-shadow:none}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+.back{
+  position:fixed;left:18px;top:18px;z-index:10;border:1px solid #ffd1df;
+  background:#ffffffdd;backdrop-filter:blur(10px);border-radius:18px;
+  padding:11px 15px;font-weight:850;color:var(--pink);cursor:pointer;
+}
+.back.hidden{display:none}
+.float{position:absolute;font-size:clamp(25px,5vw,55px);animation:float 5s ease-in-out infinite;filter:drop-shadow(0 10px 8px #ff7da455)}
+.f1{left:7%;top:14%}.f2{right:9%;top:16%;animation-delay:-2s}.f3{left:12%;bottom:10%;animation-delay:-3.2s}
+@keyframes float{50%{transform:translateY(-18px) rotate(8deg)}}
+.letter{text-align:left;position:relative}
+.letter:before{content:"💌";position:absolute;right:24px;top:-30px;font-size:64px;transform:rotate(12deg)}
+.signature{font-family:cursive;font-size:2rem;color:var(--pink);text-align:right}
+.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:540px;margin:24px auto}
+.choice{
+  min-height:115px;border:0;border-radius:26px;background:#fff;color:var(--ink);
+  font-size:1.05rem;font-weight:850;box-shadow:0 9px 22px #7b315a18;
+  cursor:pointer;transition:.25s;
+}
+.choice:hover{transform:translateY(-5px) rotate(-1deg)}
+.choice.correct{background:linear-gradient(135deg,#ff4f87,#8b6be8);color:#fff;animation:celebrate .6s}
+@keyframes celebrate{50%{transform:scale(1.08) rotate(3deg)}}
+#gameResult{min-height:34px;font-weight:850;font-size:1.15rem}
+.hidden{display:none!important}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.photo{
+  aspect-ratio:1/1.15;border-radius:28px;overflow:hidden;
+  background:linear-gradient(145deg,#ffd2df,#e4dcff);box-shadow:var(--shadow);
+  position:relative;transform:rotate(var(--r));transition:.3s;
+}
+.photo:hover{transform:rotate(0) translateY(-8px) scale(1.03)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.placeholder{height:100%;display:grid;place-items:center;font-size:3.5rem}
+.photo span{
+  position:absolute;left:10px;right:10px;bottom:10px;padding:9px 10px;border-radius:14px;
+  background:#ffffffdf;backdrop-filter:blur(8px);font-weight:850;
+}
+.photo .memory-text{
+  position:absolute;left:12px;right:12px;bottom:48px;margin:0;
+  padding:11px 12px;border-radius:16px;background:rgba(59,27,42,.72);
+  color:#fff;font-size:.82rem;line-height:1.35;text-align:left;
+  opacity:0;transform:translateY(8px);transition:.3s;
+}
+.photo:hover .memory-text{opacity:1;transform:none}
+.photo:focus-within .memory-text{opacity:1;transform:none}
+
+
+#letterCard.show{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+
+@media(max-width:650px){.photo .memory-text{opacity:1;transform:none;bottom:50px;font-size:.8rem}}
+.final-heart{font-size:clamp(90px,20vw,180px);display:block;animation:beat 1.2s infinite}
+@keyframes beat{50%{transform:scale(1.12)}}
+.confetti{position:fixed;top:-30px;z-index:99;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.progress{position:fixed;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--pink),var(--purple));z-index:20;transition:width .45s}
+.small{font-size:.88rem;opacity:.68}
+@media(max-width:650px){
+  .screen{padding:14px}.shell{padding:20px 0}.card{border-radius:26px;padding:24px 18px}
+  .game-grid,.gallery{grid-template-columns:1fr}.choice{min-height:72px}
+  .letter:before{font-size:45px;right:10px;top:-24px}
+}
+
+</style>
+
+<link rel="preload" as="image" href="foto1.jpg">
+<link rel="preload" as="image" href="foto2.jpg">
+<link rel="preload" as="image" href="foto3.jpg">
+
+</head>
+
+<body>
+<div class="progress" id="progress"></div>
+<button class="back hidden" id="back" onclick="previous()">← Atrás</button>
+
+<!-- 1. INICIO -->
+<section class="screen active" id="s0">
+  <div class="float f1">💗</div><div class="float f2">✨</div><div class="float f3">🌷</div>
+  <div class="shell">
+    <div class="eyebrow">💞 hola mi amor</div>
+    <h1>Tengo algo<br><span class="gradient">para ti…</span></h1>
+    <p>Es una pequeña sorpresita hecha con mucho amor y cariño. Pero tendrás que descubrirla paso a paso, asi que dale al botoncito de abajo . 💖</p>
+    <div class="actions"><button class="btn" onclick="next()"> Presioname mi vida ✨</button></div>
+  </div>
+</section>
+
+<!-- 2. CARTA -->
+<section class="screen" id="s1">
+  <div class="shell">
+    <div class="card letter">
+      <div class="eyebrow">una cartita 💌</div>
+
+      <h2>
+        Para mi niña hermosa<br>
+        <span class="gradient">la mujer que más quiero</span>
+      </h2>
+
+      <p>Mi amorcito,</p>
+
+      <p>Hoy quería dedicarte estas palabritas porque eres alguien muy especial para mí.</p>
+
+      <p>Me encanta tu forma de ser, tu sencillez, tu humildad y esa tranquilidad que transmites.</p>
+
+      <p>Gracias por cada sonrisa, cada conversación y cada momento bonito que compartimos. 💕</p>
+
+      <p>Me alegra mucho tenerte en mi vida, y, aunque estemos lejitos, siempre te llevo en mi mente y en mi corazón.</p>
+
+      <p>Siempre recuerda lo mucho que te amo mi amor. ❤️</p>
+
+      <p class="signature">Con mucho cariño, Tu lobito ♡</p>
+
+      <div class="actions">
+        <button class="btn" onclick="next()">Juguemos algo 🎮</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 3. JUEGO -->
+<section class="screen" id="s2">
+  <div class="shell"><div class="card">
+    <div class="eyebrow">Adivina 💘</div>
+    <h2>¿Dónde está<br><span class="gradient">mi lugar favorito?</span></h2>
+    <p>Elige una respuesta. Solo una desbloqueará el siguiente recuerdo… 😌</p>
+    <div class="game-grid">
+      <button class="choice" onclick="wrong(this, 0)">🏖️ En la playa</button>
+      <button class="choice" onclick="win(this)">🫶 A tu lado</button>
+      <button class="choice" onclick="wrong(this, 1)">🍕 En una pizzería</button>
+    </div>
+    <div id="gameResult" aria-live="polite"></div>
+    <div class="actions"><button id="unlock" class="btn hidden" onclick="next()"> toca una vez más amor 😘</button></div>
+  </div></div>
+</section>
+
+<!-- 4. FOTOS -->
+<section class="screen" id="s3">
+  <div class="shell">
+    <div class="eyebrow"> unas foticos de... 📷</div>
+    <h2> Momentos <br><span class="gradient">inolvidables</span></h2>
+   
+    <div class="gallery">
+
+  <!-- FOTO 1 -->
+  <div class="photo" style="--r:-3deg" tabindex="0">
+    <img src="foto1.jpg" alt="Nuestro primer recuerdo">
+    <p class="memory-text">
+      Cuando fuimos al cine y nos tomamos fotos, no imaginé que después de unas horas nos daríamos nuestro primer beso. 💗
+    </p>
+    <span>Me encantas mucho</span>
+  </div>
+
+  <!-- FOTO 2 -->
+  <div class="photo" style="--r:2deg" tabindex="0">
+    <img src="foto2.jpg" alt="Nuestra aventura">
+    <p class="memory-text">
+      Cuando fuí a Piura para estar contigo y pasar juntos tu cumpleaños, tenerte cerca otra vez me hizo muy feliz. 🥰
+    </p>
+    <span>Eres mi persona favorita</span>
+  </div>
+
+  <!-- FOTO 3 -->
+  <div class="photo" style="--r:-1deg" tabindex="0">
+    <img src="foto3.jpg" alt="Mi favorita">
+    <p class="memory-text">
+      Cuando fuimos al museo, aunque era mi último día allá. El estar junto a tí, pasear contigo y conocer lugares nuevos, fué algo muy especial para mí. 🫶
+    </p>
+    <span>Te amo 💕</span>
+  </div>
+
+</div>
+    <div class="actions"><button class="btn" onclick="next()">Y para finalizar 🥰</button></div>
+  </div>
+</section>
+
+<!-- 5. FINAL -->
+<section class="screen" id="s4">
+  <div class="shell">
+    <span class="final-heart">💖</span>
+    <div class="eyebrow">Gracias por todooo</div>
+    <h2>Feliz Día amor,<br><span class="gradient">mi persona favorita</span></h2>
+    <p>Gracias por llegar a mi vida y hacer que los momentos simples sean más bonitos.</p>
+
+    <p>Quiero seguir cuidando lo nuestro, acompañarte en cada etapa de tu vida y caminar siempre de tu mano. ❤️</p>
+
+<p>Te amo con todo mi corazón ❤️✨</p>
+    <div class="actions">
+      <button class="btn" onclick="confetti()">Haz llover amor 🎉</button>
+      <button class="btn secondary" onclick="goTo(0)">Ver otra vez ↺</button>
+    </div>
+    <p class="small">Hecho por tu lobito con mucho amor especialmente para ti, auuuuhhhh 💓.</p>
+  </div>
+</section>
+
+<script>
+let current=0, total=5;
+const screens=[...document.querySelectorAll('.screen')];
+const progress=document.getElementById('progress');
+const back=document.getElementById('back');
+
+function goTo(n){
+  if(n<0||n>=total||n===current)return;
+  const old=screens[current], nextScreen=screens[n];
+  old.classList.add('exit');
+  setTimeout(()=>{old.classList.remove('active','exit');nextScreen.classList.add('active');},220);
+  current=n;
+  progress.style.width=(current/(total-1))*100+'%';
+  back.classList.toggle('hidden',current===0);
+  if(current===4)setTimeout(confetti,450);
+}
+function next(){goTo(current+1)}
+function previous(){goTo(current-1)}
+function wrong(el, option){
+
+  let message = "";
+
+  if(option === 0){
+    message = "La playa sería preciosa, pero creo que mi lugar favorito se siente más cerca de ti. 💗 Inténtalo otra vez.";
+  }else if(option === 1){
+    message = "Una pizza contigo sería un plan perfecto 😋, pero hay una respuesta todavía más bonita. Pista: tiene que ver contigo. 🫶";
+  }
+
+  document.getElementById("gameResult").textContent = message;
+
+  el.animate(
+    [
+      {transform:'translateX(0)'},
+      {transform:'translateX(-8px)'},
+      {transform:'translateX(8px)'},
+      {transform:'translateX(0)'}
+    ],
+    {
+      duration:350
+    }
+  );
+}
+  
+function win(el){
+  document.querySelectorAll('.choice').forEach(x=>x.disabled=true);
+  el.classList.add('correct');
+  document.getElementById('gameResult').textContent='¡Correcto! Mi lugar favorito siempre será contigo. 🫶';
+  document.getElementById('unlock').classList.remove('hidden');
+  confetti();
+}
+function confetti(){
+  const icons=['💗','💖','✨','🌸','💕','🫶'];
+  for(let i=0;i<65;i++){
+    const e=document.createElement('span');e.className='confetti';
+    e.textContent=icons[Math.floor(Math.random()*icons.length)];
+    e.style.left=Math.random()*100+'vw';
+    e.style.fontSize=(14+Math.random()*23)+'px';
+    e.style.animationDuration=(2.5+Math.random()*2.5)+'s';
+    e.style.animationDelay=(Math.random()*.45)+'s';
+    document.body.appendChild(e);setTimeout(()=>e.remove(),5600);
+  }
+}
+
+progress.style.width='0%';
+</script>
+</body>
+</html>
